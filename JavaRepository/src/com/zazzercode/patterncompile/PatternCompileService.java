@@ -4,6 +4,8 @@
 package com.zazzercode.patterncompile;
 
 /**
+ * StringTokenizer not used because is mentioned as a legacy class in api docs
+ * 
  * @author prayag
  * 
  */
