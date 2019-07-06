@@ -16,7 +16,8 @@ public class CsvSpecs {
 
         System.out.println(encoded);
 
-        var f = new FileWriter("/tmp/abc.csv").append(encoded)
+        var f = FileWriter.openStream("/tmp/abc.csv")
+                .append(encoded)
                 .thenCompose($ -> $.flushStream())
                 .thenCompose($ -> $.closeStream());
 
