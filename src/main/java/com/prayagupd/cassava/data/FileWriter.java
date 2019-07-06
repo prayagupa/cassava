@@ -18,8 +18,15 @@ public class FileWriter {
         this.fileOutputStream = new FileOutputStream(file);
     }
 
-    public static FileWriter openStream(String file) throws FileNotFoundException {
-        return new FileWriter(file);
+    public static CompletableFuture<FileWriter> openStream(String file) {
+        CompletableFuture<CompletableFuture<FileWriter>> f = CompletableFuture.supplyAsync(() -> {
+            try {
+                return CompletableFuture.completedFuture(new FileWriter(file));
+            } catch (FileNotFoundException e) {
+                return CompletableFuture.failedFuture(e);
+            }
+        });
+        return f.thenCompose(Function.identity());
     }
 
     public CompletableFuture<FileWriter> append(String data) {

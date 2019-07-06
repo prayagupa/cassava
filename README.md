@@ -6,10 +6,24 @@ Java CSV encoder/decoder
 example snipped
 
 ```java
-FileWriter.openStream("/tmp/abc.csv")
-                .append(encoded)
-                .thenCompose($ -> $.flushStream())
-                .thenCompose($ -> $.closeStream());
+
+var success = FileWriter.openStream("/tmp/abc.csv")
+        .thenCompose($ -> $.append(encoded))
+        .thenCompose($ -> $.flushStream())
+        .thenCompose($ -> $.closeStream());
+
+//failure example
+var failure = FileWriter.openStream("/dont_exist/abc.csv")
+        .thenCompose($ -> $.append(encoded))
+        .thenCompose($ -> $.flushStream())
+        .thenCompose($ -> $.closeStream());
+
+failure.handle((s, f) -> {
+    if (f != null)
+        System.out.println("error: " + f);
+    return s;
+});
+        
 ```
 
 https://tools.ietf.org/html/rfc4180

@@ -16,11 +16,24 @@ public class CsvSpecs {
 
         System.out.println(encoded);
 
-        var f = FileWriter.openStream("/tmp/abc.csv")
-                .append(encoded)
+        var success = FileWriter.openStream("/tmp/abc.csv")
+                .thenCompose($ -> $.append(encoded))
+                .thenCompose($ -> $.flushStream())
+                .thenCompose($ -> $.closeStream());
+        success.get();
+
+        //failure
+
+        var failure = FileWriter.openStream("/dont_exist/abc.csv")
+                .thenCompose($ -> $.append(encoded))
                 .thenCompose($ -> $.flushStream())
                 .thenCompose($ -> $.closeStream());
 
-        f.get();
+        failure.handle((s, f) -> {
+            if (f != null)
+                System.out.println("error: " + f);
+            return s;
+        });
+
     }
 }
