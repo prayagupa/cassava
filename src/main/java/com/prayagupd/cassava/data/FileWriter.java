@@ -41,7 +41,9 @@ public class FileWriter {
                 fileOutputStream.write(data.getBytes());
                 return CompletableFuture.completedFuture(this);
             } catch (IOException e) {
-                return CompletableFuture.failedFuture(new RuntimeException("could not write to file", e));
+                return CompletableFuture.failedFuture(
+                        new RuntimeException("could not write to file", e)
+                );
             }
         });
 

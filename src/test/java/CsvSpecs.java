@@ -31,7 +31,7 @@ public class CsvSpecs {
         //
         var encoded = Csv.encode(new Audience(
                 "android",
-                "SEA",
+                "Luyata",
                 1,
                 10.0
         ));
@@ -70,7 +70,7 @@ public class CsvSpecs {
         //failure.get();
 
         //decode
-        System.out.println("decoding");
+        System.out.println("== decoding ==");
         var audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
         System.out.println(audience.platform);
         System.out.println(audience.location);

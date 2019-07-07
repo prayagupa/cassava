@@ -58,15 +58,26 @@ public class Csv {
             Class<?>[] fts = new Class[fs.size()];
 
             for (int i = 0; i < fs.size(); i++) {
-                fts[i] = fs.get(0).getType();
+                fts[i] = fs.get(i).getType();
             }
+            Class<?> s = String.class;
+            Class<?> i = Integer.class;
+            Class<?> d = Double.class;
+            Class<?>[] paramTypes = new Class[]{
+                    s, s, i, d
+            };
 
-            //FIXME constructor param types
-            var constructor = clazz.getDeclaredConstructor(String.class, String.class, Integer.class, Double.class);
+            var constructor = clazz.getDeclaredConstructor(fts);
             var fields = clazz.getFields();
             String[] values = csv.split(",");
             //FIXME value types
-            var c = constructor.newInstance(values[0], values[1], Integer.valueOf(values[2]), Double.valueOf(values[3]));
+            var valuesList = new Object[]{
+                    values[0],
+                    values[1],
+                    Integer.valueOf(values[2]),
+                    Double.valueOf(values[3])};
+
+            var c = constructor.newInstance(valuesList);
             return c;
         } catch (NoSuchMethodException e) {
             throw new CassavaExitError("error finding constructor", e);
