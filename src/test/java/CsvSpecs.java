@@ -31,6 +31,7 @@ public class CsvSpecs {
                 1,
                 10.0
         ));
+
         System.out.println(encoded);
 
         var success = FileWriter.openStream("/tmp/abc.csv")

@@ -1,9 +1,26 @@
-Cassava
+`c`a`s`sa`v`a
 ------
 
-Java CSV encoder/decoder
+java csv encoder/decoder
 
-example snipped
+csv encoding
+--
+
+```java
+// only object(data class ~> not equiv of data class in haskell) based encoding
+var encoded = Csv.encode(new Audience(
+        "android",
+        "SEA",
+        1,
+        10.0
+));
+
+// output
+android,SEA,1,10.0
+```
+
+async csv writer
+-----------
 
 ```java
 
