@@ -2,18 +2,35 @@ import com.prayagupd.cassava.data.Csv;
 import com.prayagupd.cassava.data.FileWriter;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-import static com.prayagupd.cassava.data.Csv.encode;
-
 public class CsvSpecs {
-    public static void main(String[] args) throws FileNotFoundException, ExecutionException, InterruptedException {
-        var encoded = encode(Arrays.asList(
-                new Csv.Tuple<String, Integer>("upd", 1),
-                new Csv.Tuple<String, Integer>("youpeed", 2)
-        ));
 
+    public static class Audience {
+        public String platform;
+        public String location;
+        public Integer deviceId;
+        public Double dwell;
+
+        public Audience(String platform,
+                        String location,
+                        Integer deviceId,
+                        Double dwell) {
+            this.platform = platform;
+            this.location = location;
+            this.deviceId = deviceId;
+            this.dwell = dwell;
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, ExecutionException, InterruptedException {
+
+        var encoded = Csv.encode(new Audience(
+                "android",
+                "SEA",
+                1,
+                10.0
+        ));
         System.out.println(encoded);
 
         var success = FileWriter.openStream("/tmp/abc.csv")
@@ -35,5 +52,6 @@ public class CsvSpecs {
             return s;
         });
 
+        //
     }
 }

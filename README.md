@@ -23,7 +23,6 @@ failure.handle((s, f) -> {
         System.out.println("error: " + f);
     return s;
 });
-        
 ```
 
 https://tools.ietf.org/html/rfc4180

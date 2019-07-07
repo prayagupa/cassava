@@ -9,11 +9,11 @@ import java.util.function.Function;
 
 public class FileWriter {
 
-    private String fileName;
+    private String file;
     private FileOutputStream fileOutputStream;
 
     public FileWriter(String fileName) throws FileNotFoundException {
-        this.fileName = fileName;
+        this.file = fileName;
         var file = new File(fileName);
         this.fileOutputStream = new FileOutputStream(file);
     }
