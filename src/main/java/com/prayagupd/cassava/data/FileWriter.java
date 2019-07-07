@@ -1,5 +1,7 @@
 package com.prayagupd.cassava.data;
 
+import com.prayagupd.cassava.data.api.CassavaErrors.CassavaError;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,17 +14,21 @@ public class FileWriter {
     private String file;
     private FileOutputStream fileOutputStream;
 
-    public FileWriter(String fileName) throws FileNotFoundException {
+    public FileWriter(String fileName) throws CassavaError {
         this.file = fileName;
         var file = new File(fileName);
-        this.fileOutputStream = new FileOutputStream(file);
+        try {
+            this.fileOutputStream = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new CassavaError("file not found "+ fileName, e);
+        }
     }
 
     public static CompletableFuture<FileWriter> openStream(String file) {
         CompletableFuture<CompletableFuture<FileWriter>> f = CompletableFuture.supplyAsync(() -> {
             try {
                 return CompletableFuture.completedFuture(new FileWriter(file));
-            } catch (FileNotFoundException e) {
+            } catch (CassavaError e) {
                 return CompletableFuture.failedFuture(e);
             }
         });

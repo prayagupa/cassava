@@ -1,5 +1,8 @@
 package com.prayagupd.cassava.data;
 
+import com.prayagupd.cassava.data.api.CassavaErrors.CassavaExitError;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,21 +29,50 @@ public class Csv {
         ).toString();
     }
 
+    public static <A> String encodeWithHeader(A record) {
+        var fields = Arrays.stream(record.getClass().getDeclaredFields());
+        var commaSeparatedHeaders = fields
+                .map(a -> a.getName())
+                .collect(Collectors.joining(","));
+
+        var commaSeparatedValues = encode(record);
+
+        return commaSeparatedHeaders + "\n" + commaSeparatedValues;
+    }
+
     public static <A> String encode(A record) {
         var commaSeparated = Arrays.stream(record.getClass().getDeclaredFields())
                 .map(a -> {
                     try {
                         return a.get(record).toString();
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                        throw new RuntimeException(e);
+                        throw new CassavaExitError("error accessing data class field " + a, e);
                     }
                 }).collect(Collectors.joining(","));
         return commaSeparated;
     }
 
-    //FIXME
-    public static <A> A decode(String csv) {
-        return null;
+    public static <A> A decode(String csv, Class<A> clazz) {
+        try {
+            var fs = Arrays.asList(clazz.getFields());
+            Class<?>[] fts = new Class[fs.size()];
+
+            for (int i = 0; i < fs.size(); i++) {
+                fts[i] = fs.get(0).getType();
+            }
+
+            //FIXME constructor param types
+            var constructor = clazz.getDeclaredConstructor(String.class, String.class, Integer.class, Double.class);
+            var fields = clazz.getFields();
+            String[] values = csv.split(",");
+            //FIXME value types
+            var c = constructor.newInstance(values[0], values[1], Integer.valueOf(values[2]), Double.valueOf(values[3]));
+            return c;
+        } catch (NoSuchMethodException e) {
+            throw new CassavaExitError("error finding constructor", e);
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+            throw new CassavaExitError("error", e);
+        }
     }
 }

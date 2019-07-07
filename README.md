@@ -17,6 +17,25 @@ var encoded = Csv.encode(new Audience(
 
 // output
 android,SEA,1,10.0
+
+//encode with header
+var encodeWithHeader = Csv.encodeWithHeader(new Audience(
+        "android",
+        "Jumla",
+        1,
+        10.9
+));
+
+// output
+platform,location,deviceId,dwell
+android,Jumla,1,10.9
+```
+
+csv decoding
+---------------
+
+```java
+var audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
 ```
 
 async csv writer
