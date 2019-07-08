@@ -10,6 +10,7 @@ public class CsvSpecs {
         public String location;
         public Integer deviceId;
         public Double dwell;
+        public Boolean reached;
 
         public Audience() {
 
@@ -18,11 +19,13 @@ public class CsvSpecs {
         public Audience(String platform,
                         String location,
                         Integer deviceId,
-                        Double dwell) {
+                        Double dwell,
+                        Boolean reached) {
             this.platform = platform;
             this.location = location;
             this.deviceId = deviceId;
             this.dwell = dwell;
+            this.reached = reached;
         }
     }
 
@@ -33,7 +36,8 @@ public class CsvSpecs {
                 "android",
                 "Luyata",
                 1,
-                10.0
+                10.0,
+                true
         ));
 
         System.out.println(encoded);
@@ -43,7 +47,8 @@ public class CsvSpecs {
                 "android",
                 "Jumla",
                 1,
-                10.9
+                10.9,
+                false
         ));
 
         System.out.println(encodeWithHeader);
@@ -71,7 +76,7 @@ public class CsvSpecs {
 
         //decode
         System.out.println("== decoding ==");
-        Audience audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
+        Audience audience = Csv.decode("android,Jumla,1,10.9, false", Audience.class);
         System.out.println(audience.platform);
         System.out.println(audience.location);
         System.out.println(audience.deviceId);

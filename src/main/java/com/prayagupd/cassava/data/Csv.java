@@ -73,10 +73,14 @@ public class Csv {
 
                 if (type == Integer.class) {
                     valuesList[i] = Integer.valueOf(s);
+                } else if (type == Long.class) {
+                    valuesList[i] = Long.valueOf(s);
                 } else if (type == Float.class) {
                     valuesList[i] = Float.valueOf(s);
                 } else if (type == Double.class) {
                     valuesList[i] = Double.valueOf(s);
+                } else if (type == Boolean.class) {
+                    valuesList[i] = Boolean.valueOf(s);
                 } else {
                     valuesList[i] = String.valueOf(s);
                 }

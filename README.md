@@ -12,30 +12,32 @@ var encoded = Csv.encode(new Audience(
         "android",
         "Luyata",
         1,
-        10.0
+        10.0, 
+        true
 ));
 
 // output
-android,SEA,1,10.0
+android,Luyata,1,10.0,true
 
 //encode with header
 var encodeWithHeader = Csv.encodeWithHeader(new Audience(
         "android",
         "Jumla",
         1,
-        10.9
+        10.9, 
+        false
 ));
 
 // output
-platform,location,deviceId,dwell
-android,Jumla,1,10.9
+platform,location,deviceId,dwell,reached
+android,Jumla,1,10.9,false
 ```
 
 csv decoding
 ---------------
 
 ```java
-Audience audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
+Audience audience = Csv.decode("android,Jumla,1,10.9, false", Audience.class);
 ```
 
 async csv writer
@@ -60,6 +62,25 @@ failure.handle((s, f) -> {
     return s;
 });
 ```
+
+TODO
+---
+- encode nested data classes
+```java
+class A {
+    B b;
+}
+
+class B {
+    String s;
+    Double d;
+}
+
+// output
+s,d
+```
+
+- release jar 0.1
 
 reference
 ---
