@@ -60,30 +60,37 @@ public class Csv {
             for (int i = 0; i < fs.size(); i++) {
                 fts[i] = fs.get(i).getType();
             }
-            Class<?> s = String.class;
-            Class<?> i = Integer.class;
-            Class<?> d = Double.class;
-            Class<?>[] paramTypes = new Class[]{
-                    s, s, i, d
-            };
 
             var constructor = clazz.getDeclaredConstructor(fts);
             var fields = clazz.getFields();
             String[] values = csv.split(",");
-            //FIXME value types
-            var valuesList = new Object[]{
-                    values[0],
-                    values[1],
-                    Integer.valueOf(values[2]),
-                    Double.valueOf(values[3])};
 
-            var c = constructor.newInstance(valuesList);
-            return c;
+            var valuesList = new Object[values.length];
+
+            for (int i = 0; i < values.length; i++) {
+                var s = values[i];
+                var type = fts[i];
+
+                if (type == Integer.class) {
+                    valuesList[i] = Integer.valueOf(s);
+                } else if (type == Float.class) {
+                    valuesList[i] = Float.valueOf(s);
+                } else if (type == Double.class) {
+                    valuesList[i] = Double.valueOf(s);
+                } else {
+                    valuesList[i] = String.valueOf(s);
+                }
+            }
+            return constructor.newInstance(valuesList);
+
         } catch (NoSuchMethodException e) {
             throw new CassavaExitError("error finding constructor", e);
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
-            throw new CassavaExitError("error", e);
+        } catch (IllegalAccessException e) {
+            throw new CassavaExitError("error accessing constructor", e);
+        } catch (InstantiationException e) {
+            throw new CassavaExitError("error instantiating", e);
+        } catch (InvocationTargetException e) {
+            throw new CassavaExitError("error invocating", e);
         }
     }
 }

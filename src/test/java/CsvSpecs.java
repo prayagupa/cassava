@@ -71,7 +71,7 @@ public class CsvSpecs {
 
         //decode
         System.out.println("== decoding ==");
-        var audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
+        Audience audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
         System.out.println(audience.platform);
         System.out.println(audience.location);
         System.out.println(audience.deviceId);

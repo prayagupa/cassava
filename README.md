@@ -10,7 +10,7 @@ csv encoding
 // only object(data class ~> not equiv of data class in haskell) based encoding
 var encoded = Csv.encode(new Audience(
         "android",
-        "SEA",
+        "Luyata",
         1,
         10.0
 ));
@@ -35,7 +35,7 @@ csv decoding
 ---------------
 
 ```java
-var audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
+Audience audience = Csv.decode("android,Jumla,1,10.9", Audience.class);
 ```
 
 async csv writer
@@ -61,9 +61,8 @@ failure.handle((s, f) -> {
 });
 ```
 
-https://tools.ietf.org/html/rfc4180
-
 reference
 ---
 
+- https://tools.ietf.org/html/rfc4180
 - http://hackage.haskell.org/package/cassava-0.5.1.0#readme
